@@ -4,61 +4,40 @@
 var contactObj = {
     firstname: '',
     lastname: '',
-    address: [],
-    city: [],
-    state: [],
-    phone: []
+    address: [{
+        street: '',
+        city: '',
+        state: ''
+    }],
+    phone: [],
+
+    assign: function (data) {
+        this.firstname = data[0].value;
+        this.lastname = data[1].value;
+        this.address = data[2].value + data[3].value + data[4].value;
+        this.phone = data[5].value;
+
+        this.list(this);
+    },
+
+    display: function () {
+        for (var key in this) {
+            var txt = "<li> " + key + " : " + this[key] + "</li>";
+            $("ul.c_display").append(txt);
+            $('ul.c_display').empty();
+            console.log(key + " = " + this[key]);
+        }
+    },
+
+    list: function () {
+        $('div.contact_list').show();
+        var contactName = "<li><a class=\"contact_list\" href=\"#\">" + this.firstname + " " + this.lastname + "</a></li>";
+        $('ul.c_list').append(contactName);
+    }
 };
 
 
-function addContact(data) {
-    var newContact = Object.create(contactObj);
-
-    newContact.firstname = data[0].value;
-    newContact.lastname = data[1].value;
-    newContact.address = data[2].value;
-    newContact.city = data[3].value;
-    newContact.state = data[4].value;
-    newContact.phone = data[5].value;
-
-
-
-    listContacts(newContact);
-
-    //    contactObj.city.forEach(function (value) {
-    //      console.log(contactObj.city);
-    //value.address.forEach(function (address) {
-    //   console.log(address.name);
-    // });
-    //    });
-
-
-}
-
-function listContacts(newContact) {
-
-    $('div.contact_list').show();
-
-    var contactName = "<li><a class=\"display\" href=\"#\">" + newContact.firstname + " " + newContact.lastname + "</a></li>";
-
-
-    $('ul.contact_list').append(contactName);
-
-    //    for (var key in newContact) {
-    //        console.log(key + " = " + newContact[key])
-    //    }
-
-}
-
-function displayContact() {
-    console.log("WTF?");
-    $("div.contact_display").show();
-}
-
-
-
 $(document).ready(function () {
-
     //on initial load, hide the contact list, as it's empty, and the right side nav
     //after entering a contact, display the bottom contact list, until clicked
     //on, then show right side contact info for item clicked
@@ -68,16 +47,15 @@ $(document).ready(function () {
 
     $("form#add_form").on("submit", function (event) {
         event.preventDefault(event);
-
         var data = $(this).serializeArray();
-        addContact(data);
-
+        var newContact = Object.create(contactObj); //prtotypes the obj
+        newContact.assign(data);
         this.reset(); //reset the page form
-
     });
 
-    $("a.display").click(function (event) {
-        displayContact();
+    $(".contact_list").on("click", 'ul', function (event) {
+        $("div.contact_display").show();
+        newContact.display(); //calls the display method on object
     });
 
 });
