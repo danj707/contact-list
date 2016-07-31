@@ -1,3 +1,53 @@
+html {
+    font-family: arial;
+}
+
 body {
-    box-sizing:border-box;
+    box-sizing: border-box;
+    background: darkgray;
+}
+
+h1,
+h2 {
+    text-align: center;
+}
+
+li {
+    font-size: 14px;
+    padding: 3px;
+}
+
+.contact_add {
+    display: inline-block;
+    width: 50%;
+    float: left;
+    padding-left: 10px;
+    padding-bottom: 10px;
+}
+
+.contact_display {
+    display: inline-block;
+    padding: 10px;
+    width: 40%;
+    height: auto;
+    float: right;
+}
+
+.contact_list {
+    width: 90%;
+    height: auto;
+    clear: both;
+    padding: 10px;
+}
+
+.textheader {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+@media all and (max-width: 50em) {
+    .contact_display {
+        float: none;
+        width: auto;
+    }
 }

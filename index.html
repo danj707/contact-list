@@ -2,23 +2,90 @@
 <html lang="en">
 
 <head>
-<title></title>
-<meta charset="utf-8" />
-<link rel="stylesheet" href="css/stylesheet.css">
+    <title>Contact List</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="css/stylesheet.css">
 </head>
 
 <body>
+    <div class="contact_add">
+        <form id="add_form">
+            <h1>Contacts</h1>
+            <h3>Add a contact:</h3>
 
-<header>
+            <label for="firstname">
+                <p class="textheader">First Name:</p>
+            </label>
+            <label>
+                <input id="firstname" type="text" name="firstname" placeholder="first name" required></input>
+            </label>
 
-</header>
+            <label for="lastname">
+                <p class="textheader">Last Name:</p>
+            </label>
+            <input id="lastname" type="text" name="lastname" placeholder="last name" required></input>
+
+            <label for="street">
+                <p class="textheader">Street Address:</p>
+            </label>
+
+            <input id="street" type="text" name="street" placeholder="123 First St" required></input>
+
+            <input id="newaddress" type="submit" name="submit" value="Add New Address">
+
+            <label for="city">
+                <p class="textheader">City:</p>
+            </label>
+            <input id="city" type="text" name="city" placeholder="San Francisco" required></input>
+
+            <label for="state">
+                <p class="textheader">State:</p>
+            </label>
+            <input id="state" type="text" name="state" maxlength="2" placeholder="CA" required></input>
+
+            <label for="phone">
+                <p class="textheader">Phone Number:</p>
+            </label>
+
+            <input id="phone" type="text" name="phone" placeholder="555-112-1212" required></input>
+
+            <input id="newphone" type="submit" name="submit" value="Add Phone #">
+            <p>
+                <input id="newcontact" type="submit" name="submit" value="Add New Contact">
+            </p>
+
+        </form>
+    </div>
+
+    <div class="contact_display">
+        <h2>Nextdoor Neighbor</h2>
+        <ul>
+            <li>First Name:</li>
+            <li>Last Name:</li>
+            <li>Street Address:</li>
+            <ul>
+                <li>123 John St, Dallas, TX</li>
+                <li>555 First St, San Francisco, CA</li>
+            </ul>
+            <li>City:</li>
+            <li>State:</li>
+            <li>Phone Numbers:</li>
+        </ul>
+
+    </div>
+
+    <div class="contact_list">
+        <h2>Current Contacts</h2>
+        <ul class="contact_list">
+
+        </ul>
+    </div>
 
 
 
-
-<!-- JavaScript -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js "></script>
-<script type="text/javascript " src="js/app.js "></script>
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js "></script>
+    <script type="text/javascript " src="js/app.js "></script>
 </body>
 
 </html>
