@@ -1,6 +1,7 @@
 //contact object, contains all contact information, including two arrays for
 //addresses and phone numbers linked to contact
 
+
 var contactObj = {
     firstname: '',
     lastname: '',
@@ -11,6 +12,7 @@ var contactObj = {
     }],
     phone: [],
 
+    //assigns the form data
     assign: function (data) {
         this.firstname = data[0].value;
         this.lastname = data[1].value;
@@ -20,6 +22,7 @@ var contactObj = {
         this.list(this);
     },
 
+    //displays the clicked contact
     display: function () {
         for (var key in this) {
             var txt = "<li> " + key + " : " + this[key] + "</li>";
@@ -29,6 +32,7 @@ var contactObj = {
         }
     },
 
+    //lists the contacts
     list: function () {
         $('div.contact_list').show();
         var contactName = "<li><a class=\"contact_list\" href=\"#\">" + this.firstname + " " + this.lastname + "</a></li>";
@@ -48,14 +52,14 @@ $(document).ready(function () {
     $("form#add_form").on("submit", function (event) {
         event.preventDefault(event);
         var data = $(this).serializeArray();
-        var newContact = Object.create(contactObj); //prtotypes the obj
+        var newContact = Object.create(contactObj); //obj constructor
         newContact.assign(data);
         this.reset(); //reset the page form
     });
 
-    $(".contact_list").on("click", 'ul', function (event) {
+    $(".contact_list").on("click", 'ul', newContact.display(event) {
         $("div.contact_display").show();
-        newContact.display(); //calls the display method on object
+        newContact.display(); //<<<---- HERE IS WHAT DOESN'T WORK
     });
 
 });
