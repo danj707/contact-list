@@ -4,7 +4,9 @@ html {
 
 body {
     box-sizing: border-box;
-    background: darkgray;
+    background-image: url("../images/contact_list.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 h1,

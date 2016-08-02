@@ -1,71 +1,115 @@
-//contact object, contains all contact information, including two arrays for
-//addresses and phone numbers linked to contact
+///With assistance from Mentor, M.Banea for coding
 
-var contactObj = {
-    firstname: '',
-    lastname: '',
-    address: [{
-        street: '',
-        city: '',
-        state: ''
-    }],
-    phone: [],
+///function to create the contactBook (repository)
 
-    //assigns the form data
-    assign: function (data) {
+function contactBook() {
+    this.knownKeys = ['firstname', 'lastname', 'street', 'city', 'state', 'phone'];
+    this.addresses = [];
+}
 
-        this.firstname = data[0].value;
-        this.lastname = data[1].value;
-        this.address = data[2].value + data[3].value + data[4].value;
-        this.phone = data[5].value;
+//prototype methods for contactBook
+contactBook.prototype = {
 
-        this.list(this);
+    //creates an ID to track the object per instance
+    newId: function () {
+        //if there are no IDs set create ID 1;
+        if (this.addresses.length == 0) return 1;
+        return (
+            //check the last ID set so far and return that ID + 1
+            Math.max.apply(null, this.addresses.map(function (address) {
+                return address.id;
+            })) + 1
+        );
     },
 
-    //displays the clicked contact
-    display: function (contact) {
-        if (contact = newContact.lastname) {
-            $('ul.c_display').empty();
-            for (var key in newContact) {
-                // console.log("match! id: " + contact + "=" + newContact.lastname);
-                var txt = "<li> " + key + " : " + this[key] + "</li>";
-                $("ul.c_display").append(txt);
-            }
-        } else {
-            alert("no such match!");
-        }
+    //add a contact function
+    addContact: function (contact) {
+        //get the last ID created above and
+        contact.id = this.newId();
+        // populate the rest of the contact details
+        this.addresses.push(contact);
+        console.log(contact);
     },
 
-    list: function () {
-        $('div.contact_list').show();
-        var contactName = "<li><a class=\"contact_list\" id=" + this.lastname + " href=\"#\">" + this.firstname + " " + this.lastname + "</a></li>";
-        $('ul.c_list').append(contactName);
-    },
-
+    //get a contact function
+    getContact: function (id) {
+        //search for a contact based the input received
+        return this.addresses.find(function (contact) {
+            return contact.id === id;
+        });
+    }
 };
 
-//var newContact = new contactObj;
-var newContact = Object.create(contactObj); //obj constructor
+//function to create the contactForm object
+function contactForm() {
+    //list of all input field IDs, these match the id's used in the html form
+    this.inputFieldIds = ['firstname', 'lastname', 'street', 'city', 'state', 'phone'];
+}
+
+//prototype methods for the contactForm object
+contactForm.prototype = {
+
+    //collects the data from the form by id (matches above), get the value and adds to array
+    collectFormData: function () {
+        var output = {};
+        //for each of the input fields match the IDs and their values, and add them to the output array;
+        this.inputFieldIds.forEach(function (element) {
+            output[element] = $('#' + element).val();
+        });
+        return output;
+    },
+};
+
+///new global objects - new call creates new objects
+var contactBook = new contactBook();
+var contactForm = new contactForm();
+
+// show contact names in order to be clicked for more details
+function renderContacts(contactBook) {
+    $('ul.c_list').empty();
+    $('div.contact_list').show();
+
+    contactBook.addresses.forEach(function (contact) {
+        $('ul.c_list').append("<li><a href='#' id='" + contact.id + "-show-contact' class='show'>" + contact.firstname + " " + contact.lastname + "</a></li>");
+    });
+}
+//show contact details after you click on the contact name
+function displayContact(contactBook, contact) {
+    var htmlOutput = '';
+    contactBook.knownKeys.forEach(function (keyName) {
+        //the keyname is the key of the address book array (firstname, lastname etc)
+        //contact[keyName] is the value of the key
+
+        if (contact[keyName]) {
+            htmlOutput += "<li><strong>" + keyName + ": </strong>" + contact[keyName] + "</li>";
+        }
+    });
+
+    $('ul.c_display').html(htmlOutput); //output aggregated html to the DOM
+}
 
 $(document).ready(function () {
-    //on initial load, hide the contact list, as it's empty, and the right side nav
-    //after entering a contact, display the bottom contact list, until clicked
-    //on, then show right side contact info for item clicked
-    //also, reset the contact add form
-    $('div.contact_display').hide();
+
+    $('div.contact_display').hide(); //hide the sections we dont need on load
     $('div.contact_list').hide();
 
-    $("form#add_form").on("submit", function (event) {
-        event.preventDefault(event);
-        var data = $(this).serializeArray();
-        newContact.assign(data);
-        this.reset(); //reset the page form
+    $('button#newcontact').click(function (event) {
+        event.preventDefault();
+
+        //collect all the form data to put them in the address book
+        var contact = contactForm.collectFormData(); // collect the form data
+
+        contactBook.addContact(contact); //add the form data to a new contact obj
+        renderContacts(contactBook); //display the list of contacts
+
+        document.getElementById('add_form').reset(); //reset the form
+
     });
 
-    $(".contact_list").on("click", 'ul', function (event) {
-        //event.preventDefault(event);
-        $("div.contact_display").show();
-        var contact = newContact.display(String(event.target.id));
+    $('.contact_list').on('click', '.show', function (event) {
+        event.preventDefault();
+        $('div.contact_display').show();
+        var contact = contactBook.getContact(parseInt(event.target.id));
+        displayContact(contactBook, contact);
     });
-
 });

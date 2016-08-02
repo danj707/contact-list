@@ -2,12 +2,13 @@
 <html lang="en">
 
 <head>
-    <title>Contact List</title>
+    <title>Simple Contact List App</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="css/stylesheet.css">
 </head>
 
 <body>
+    <!--contact list form-->
     <div class="contact_add">
         <form id="add_form">
             <h1>Contacts</h1>
@@ -31,8 +32,6 @@
 
             <input id="street" type="text" name="street" placeholder="123 First St" required></input>
 
-            <input id="newaddress" type="submit" name="submit" value="Add New Address">
-
             <label for="city">
                 <p class="textheader">City:</p>
             </label>
@@ -49,20 +48,21 @@
 
             <input id="phone" type="text" name="phone" placeholder="555-112-1212" required></input>
 
-            <input id="newphone" type="submit" name="submit" value="Add Phone #">
             <p>
-                <input id="newcontact" type="submit" name="submit" value="Add New Contact">
+                <button id="newcontact" type="submit" name="submit">Add Contact</button>
             </p>
 
         </form>
     </div>
 
+    <!--   display the selected contact-->
     <div class="contact_display">
         <h2>Nextdoor Neighbor</h2>
         <ul class="c_display">
         </ul>
     </div>
 
+    <!--   display the list of contacts, clickable-->
     <div class="contact_list">
         <h2>Current Contacts</h2>
         <ul class="c_list">
@@ -70,9 +70,7 @@
     </div>
 
 
-
-    <!-- JavaScript -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js "></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript " src="js/app.js "></script>
 </body>
 
