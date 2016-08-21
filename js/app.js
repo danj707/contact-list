@@ -3,8 +3,9 @@
 ///function to create the contactBook (repository)
 
 function contactBook() {
-    this.knownKeys = ['firstname', 'lastname', 'street', 'city', 'state', 'phone'];
+    this.knownKeys = ['firstname', 'lastname', 'street', 'city', 'state', ['phone']];
     this.addresses = [];
+    this.phoneNumbers = [];
 }
 
 //prototype methods for contactBook
@@ -22,13 +23,17 @@ contactBook.prototype = {
         );
     },
 
+    //add new phone number here
+    updatePhoneNum: function (contact, newPhone) {
+        console.log("Add phone number: " + newPhone + "for: " + contact.id + "for ");
+    },
+
     //add a contact function
     addContact: function (contact) {
         //get the last ID created above and
         contact.id = this.newId();
         // populate the rest of the contact details
         this.addresses.push(contact);
-        console.log(contact);
     },
 
     //get a contact function
@@ -43,7 +48,7 @@ contactBook.prototype = {
 //function to create the contactForm object
 function contactForm() {
     //list of all input field IDs, these match the id's used in the html form
-    this.inputFieldIds = ['firstname', 'lastname', 'street', 'city', 'state', 'phone'];
+    this.inputFieldIds = ['firstname', 'lastname', 'street', 'city', 'state', ['phone']];
 }
 
 //prototype methods for the contactForm object
@@ -81,11 +86,22 @@ function displayContact(contactBook, contact) {
         //contact[keyName] is the value of the key
 
         if (contact[keyName]) {
-            htmlOutput += "<li><strong>" + keyName + ": </strong>" + contact[keyName] + "</li>";
+            if (keyName == "phone") {
+                htmlOutput += "<li><strong>" + keyName + ": </strong>" + contact[keyName] + "</li><a href='#' id='" + contact.id + "-newphone' class='newphone'>New phone number</a>";
+            } else {
+                htmlOutput += "<li><strong>" + keyName + ": </strong>" + contact[keyName] + "</li>";
+            }
         }
     });
 
     $('ul.c_display').html(htmlOutput); //output aggregated html to the DOM
+}
+
+function newPhone(contactBook, contact) {
+    //console.log(contactBook);
+    //console.log(contact);
+    $('.contact_display').append('<form><input type=\"text\" id="newphone" placeholder=\"new phone #\"></input><button type=\"submit\" class="addphonenum" id="' + contact.id + '" name=\"submit\">Add new phone</button>');
+
 }
 
 $(document).ready(function () {
@@ -112,4 +128,19 @@ $(document).ready(function () {
         var contact = contactBook.getContact(parseInt(event.target.id));
         displayContact(contactBook, contact);
     });
+
+    $('.contact_display').on('click', '.newphone', function (event) {
+        event.preventDefault();
+        var contact = contactBook.getContact(parseInt(event.target.id));
+        newPhone(contactBook, contact);
+    });
+
+    $('.contact_display').on('click', '.addphonenum', function (event) {
+        event.preventDefault();
+        var contact = contactBook.getContact(parseInt(event.target.id));
+        var newPhone = document.getElementById('#newphone');
+        console.log(newPhone);
+        contactBook.updatePhoneNum(contactBook, newPhone);
+    });
+
 });
